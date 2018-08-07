@@ -239,5 +239,5 @@ def output():
 	plt.legend()
 	plt.show()
 
-#if (--name--=='main'):
-output()
+if (__name__=='__main__'):
+	output()
