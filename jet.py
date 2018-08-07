@@ -1,7 +1,7 @@
 # Parallel rays through uniform blob from
 # under it.
 # Changes to be made :
-# 1) Sphere -> Cylinder   -- This is done, I guess. From bottom of cylinder now.
+# 1) Sphere -> Cylinder   -- This is done.
 # 2) Uniform -> Non-uniform (grids) -- This is done. With unit Cartesian grid.
 # 3) From under it -> Anywhere -- This can probably be done by changing the mu initial.
 
