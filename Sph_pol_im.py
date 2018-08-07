@@ -1,4 +1,4 @@
-# PROGRAM NAME : Sph_im_pol
+# PROGRAM NAME : Sph_pol_im
 # AUTHOR : Agnibha Banerjee
 # DATE : 5 Aug 2018
 #
@@ -76,10 +76,10 @@ def isoscatt():
 
 
 # lmatrix creates the rotation matrix:
-#       | 1  		0 			0 		 0 |
-#		| 0 	cos(2*ang)	sin(2*ang)   0 |
-#		| 0 	-sin(2*ang) cos(2*ang)	 0 |
-#		| 0		    0		    0		 1 |
+#     	        | 1  		0 		0 	 0 |
+#		| 0 	cos(2*ang)	sin(2*ang)  	 0 |
+#		| 0 	-sin(2*ang) 	cos(2*ang)	 0 |
+#		| 0	        0	        0	 1 |
 #
 #		Parameters :
 # ang : The angle used in the rotation matrix
@@ -544,18 +544,9 @@ def transfer(taumax):
 
 def output():
 	en,jp,hp,kp,jm,hm,km,image,poli,polq,polu,polv=transfer(taumax)
-	#angle=np.zeros([imagenx/5,imagenx/5])        #Averaging 5 X 5 squares
-	#for i in range(imagenx/5):
-	#	for j in range(imagenx/5):
-	#		for k in range(5*i,5*(i+1)):
-	#			for l in range (5*j,5*(j+1)):
-	#				angle[i,j]=angle[i,j]+0.5*np.arctan(polu[k,l]/polq[k,l])
-	#angle=angle/25.
-	#print angle.shape
 	np.seterr(divide='ignore',invalid='ignore') #ignoring all pixels with no photons
 	angle=0.5*np.arctan(polu/polq)
 	deg=np.sqrt(polq**2+polu**2+polv**2)/poli
-	#deg=deg/image
 	energy= float(en)/nphoton	#Normalising all the outputs
 	jp=jp/nphoton
 	hp=hp/nphoton
@@ -566,18 +557,19 @@ def output():
 	image=image/nphoton
 	plt.imshow(image,'gray')
 	plt.colorbar()
-	#plt.plot(image[imagenx/2])
 	f=open("moments.dat","w")
 	for i in range(ngrid):
 			tauint[i]=taumax-tauint[i]
 			print>>f,r[i],tauint[i],jp[i],jm[i],hp[i],hm[i],kp[i],km[i]
 	print "Energy = ",energy
-	#plt.plot(tauint,(jp+jm))
 	x,y=np.meshgrid(np.linspace(0,imagenx-1,imagenx),np.linspace(0,imagenx-1,imagenx))
 	u=deg*np.cos(angle)
 	v=deg*np.sin(angle)
-	#plt.quiver(x[::10,::10],y[::10,::10],u[::10,::10],v[::10,::10],color='y')
 	plt.quiver(x,y,u,v,color='b')
 	plt.show()
+	
+def main():
+	output()
 
-output()
+if __name__=='__main__':
+	main()
