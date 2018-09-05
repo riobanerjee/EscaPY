@@ -51,7 +51,7 @@ def path(inuinit,jnu,resx,resy,resz,va,dz):
 	for i in range(resx):
 		for j in range(resy):
 			for k in range(resz):
-				inu[i,j]=jnu[i,j,k]*dz/cos(va)
+				inu[i,j]+=jnu[i,j,k]*dz/cos(va)
 	return inu
 
 
