@@ -48,10 +48,11 @@ def makegrid(f,resx,resy,resz):
 def path(inuinit,jnu,resx,resy,resz,va,dz):
 
 	inu=inuinit
+	dn=dz*cos(va)+dx*sin(va)
 	for i in range(resx):
 		for j in range(resy):
 			for k in range(resz):
-				inu[i,j]+=jnu[i,j,k]*dz/cos(va)
+				inu[i,j]+=jnu[i,j,k]*dn
 	return inu
 
 
@@ -63,12 +64,15 @@ def main():
 	resx,resy,resz = 100 , 100 , 100
 	xmin,ymin,zmin = 0. , 0. , 0.
 	xmax,ymax,zmax = 10. , 10. , 10.
-
 	inu=np.zeros([resx,resy])
 	jnu=makegrid(rule,resx,resy,resz)
 	dx,dy,dz = (xmax-xmin)/resx , (ymax-ymin)/resy , (zmax-zmin)/resz
 	va=input("Enter viewing angle in radians ")   # in radians, from z axis on the xz plane
-	inu=path(inu,jnu,resx,resy,resz,va,dz)
+	if va%(2*pi)==0:
+		va=1e-4
+	elif va>2*pi:
+		va=va%(2*pi)
+	inu=path(inu,jnu,resx,resy,resz,va,dx,dy,dz)
 	plt.imshow(inu,'gray')
 	plt.xlabel('X')
 	plt.ylabel('Y')
